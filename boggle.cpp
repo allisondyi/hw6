@@ -95,5 +95,42 @@ bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>
 								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
 {
 //add your solution here!
-
+	int row=r+dr; //where we are 
+	int col=c+dc;
+	int board_col=board[0].size(); //board size 
+	int board_row=board.size(); 
+	if (dict.find(word)!=dict.end() and prefix.find(word)==prefix.end()) { //found in dicitonary and is not a prefix 
+		result.insert(word);
+		return true;
+	}
+	else if (row>board_row) { //we are at the last row 
+		if (dict.find(word)!=dict.end()) {
+			result.insert(word);
+			return true;
+		}
+		else {
+			return false; 
+		}
+	}
+	else if (col>board_col) { //we are at the last col 
+		if (dict.find(word)!=dict.end()) {
+			result.insert(word);
+			return true;
+		}
+		else {
+			return false; 
+		}
+	}
+	else { //not found so we add another word to it 
+		word+= board[r][c]; //add the letter in the incremented direction 
+		bool result_bog=boggleHelper(dict,prefix, board,word,result,row,col,dr,dc);
+		if (result_bog==true) { //found 
+			return true;
+		}
+		else if (result_bog==false and dict.find(word)!=dict.end()) {
+			result.insert(word);
+			return true;
+		}
+	}
+	return false; 
 }
